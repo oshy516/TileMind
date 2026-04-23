@@ -1,3 +1,4 @@
+#define EXTRALARGE_DATASET
 /**
  * This version is stamped on May 10, 2016
  *
@@ -12,7 +13,7 @@
 
 /* Default to LARGE_DATASET. */
 # if !defined(MINI_DATASET) && !defined(SMALL_DATASET) && !defined(MEDIUM_DATASET) && !defined(LARGE_DATASET) && !defined(EXTRALARGE_DATASET)
-#  define LARGE_DATASET
+#  define EXTRALARGE_DATASET
 # endif
 
 # if !defined(M) && !defined(N)

@@ -1,0 +1,41 @@
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 生成的 pluto/cloog 文件
+*.pluto.cloog
+
+# 测试数据文件
+data*.txt
+*.txt
+
+# 生成的测试 C 代码（带变体后缀）
+*_ilp_ex*.c
+*_ilp_openmp_ex*.c
+*_tss_tile_ex*.c
+*_tss_tile_openmp_ex*.c
+*_openmp_ex*.c
+*_ppcg_*.c
+selective_benchmark.c
+
+# 编译生成的二进制文件（无扩展名可执行文件）
+*_ilp_ex
+*_ilp_ex[0-9]
+*_ilp_openmp_ex
+*_ilp_openmp_ex[0-9]
+*_ilp_ex_unroll
+*_ilp_openmp_ex_unroll
+*_tss_tile_ex
+*_tss_tile_ex_nj
+*_tss_tile_openmp_ex
+*_tss_tile_openmp_ex_nj
+*_openmp_ex
+*_polly_tile
+*_polly_tile_par
+*_ppcg_openmp_tile_ex
+selective_benchmark
+
+# 其他生成文件
+*_schedule.txt
+*_ilp_params_*.py
+dimension_detect*.py

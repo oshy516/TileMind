@@ -1,0 +1,198 @@
+# Auto-generated parameters for ILP tiling
+
+# Cache parameters
+L1_size = 48683  # L1 data cache size in bytes
+L2_size = 2097152  # L2 cache size in bytes
+cache_line = 64  # Cache line size in bytes
+
+# 循环变量信息
+# 原始变量到唯一变量的映射
+# c0 -> ['c0_b0', 'c0_b1']
+# c1 -> ['c1_b0', 'c1_b1']
+# c2 -> ['c2_b0']
+
+loop_vars = ['c0_b0', 'c1_b0', 'c2_b0', 'c0_b1', 'c1_b1']  # 循环变量列表
+
+# 循环变量尺寸 seq
+c0_b0_size = 1999 # Loop variable c0 in block 0
+c1_b0_size = 2600 # Loop variable c1 in block 0
+c2_b0_size = 1999  # Loop variable c2 in block 0
+c0_b1_size = 2000  # Loop variable c0 in block 1
+c1_b1_size = 2600  # Loop variable c1 in block 1
+
+#par
+# c0_b0_size = 2600 # Loop variable c0 in block 0
+# c1_b0_size = 1999  # Loop variable c1 in block 0
+# c2_b0_size = 1999  # Loop variable c2 in block 0
+# c0_b1_size = 2000  # Loop variable c0 in block 1
+# c1_b1_size = 2600  # Loop variable c1 in block 1
+
+# 按块组织的循环变量
+# 块 0 中的循环变量: ['c0_b0', 'c1_b0', 'c2_b0']
+# 块 1 中的循环变量: ['c0_b1', 'c1_b1']
+
+num_threads = 16 # Number of physical cores
+
+openmp_parallel_blocks = {
+    0: True,
+    1: True,
+}
+
+
+# Tileable dimensions for each block
+block_tileable_dims = {
+    0: {
+        'c0_b0': True,  # Variable can be tiled
+        'c1_b0': True,  # Variable can be tiled
+        'c2_b0': True,  # Variable can be tiled
+    },
+    1: {
+        'c0_b1': True,  # Variable can be tiled
+        'c1_b1': True,  # Variable can be tiled
+    },
+}
+
+# Block-specific array layout information
+block_array_layout = {
+    0: {
+        # Multi-dimensional arrays
+        'A': 'column_major',  # 2D array, dims: c0_b0, c2_b0
+        'B': 'column_major',  # 2D array, dims: c0_b0, c1_b0, c2_b0
+    },
+    1: {
+        # Multi-dimensional arrays
+        'B': 'row_major',  # 2D array, dims: c0_b1, c1_b1
+    },
+}
+
+# Array dimension variables information
+array_dimension_vars = {
+    'A': {
+        0: ['c0_b0', 'c2_b0'],
+    },
+    'B': {
+        0: ['c0_b0', 'c1_b0', 'c2_b0'],
+        1: ['c0_b1', 'c1_b1'],
+    },
+}
+
+# Block-specific column-major layout information
+block_is_column_major = {
+    0: True,  # Block primarily uses column-major arrays
+    1: False,  # Block primarily uses row-major arrays
+}
+
+# 数组的列主序关键维度
+array_column_major_dims = {
+    'A': {
+        0: ['c0_b0'],  # 列主序
+    },
+    'B': {
+        0: ['c1_b0'],  # 列主序
+    },
+}
+
+# Statement costs (nanoseconds)
+T_op1 = 20.55  # Statement 1 cost (block 0)
+T_op2 = 9.43  # Statement 2 cost (block 1)
+
+# Data type information
+data_type = 'double'
+data_size = 8  # Size in bytes
+
+
+# Tileable dimensions for each block
+block_tileable_dims = {
+    0: {
+        'c0_b0': True,  # Variable can be tiled
+        'c1_b0': True,  # Variable can be tiled
+        'c2_b0': True,  # Variable can be tiled
+    },
+    1: {
+        'c0_b1': True,  # Variable can be tiled
+        'c1_b1': True,  # Variable can be tiled
+    },
+}
+
+# Block-specific array layout information
+# Statement costs (nanoseconds)
+T_op1 = 20.55  # Statement 1 cost (block 0)
+T_op2 = 9.43  # Statement 2 cost (block 1)
+
+# Cache access latencies (nanoseconds)
+T_L1 = 3.18  # L1 cache access latency
+T_L2 = 7.94  # L2 cache access latency
+
+# Operation latencies (nanoseconds)
+T_add = 0.76  # Double addition latency
+T_sub = 0.74  # Double subtraction latency
+T_mul = 1.49  # Double multiplication latency
+T_div = 5.19  # Double division latency
+T_sqrt = 20.00  # Double sqrt latency
+T_trig = 40.00  # Double trig function latency
+T_log_exp = 35.00  # Double log/exp latency
+T_pow = 45.00  # Double power function latency
+
+# Math function mappings
+# Math function type to function name mapping
+math_func_type_map = {
+    'sqrt': ['sqrt', 'sqrtf'],
+    'trig': ['sin', 'cos', 'tan', 'asin', 'acos', 'atan',
+             'sinf', 'cosf', 'tanf', 'asinf', 'acosf', 'atanf'],
+    'log_exp': ['log', 'log10', 'exp', 'logf', 'log10f', 'expf'],
+    'pow': ['pow', 'powf']
+}
+
+# Detailed math function latency mapping
+math_func_latency_map = {
+    'double': {
+        'sqrt': 20.00,
+        'sin': 40.00,
+        'cos': 40.00,
+        'tan': 40.00,
+        'asin': 40.00,
+        'acos': 40.00,
+        'atan': 40.00,
+        'log': 35.00,
+        'log10': 35.00,
+        'exp': 35.00,
+        'pow': 45.00
+    }
+}
+
+
+# Detailed operation costs
+stmt_count = 2
+# Block-specific objective functions
+block_0_objective = "c0_b0_blocks * c1_b0_blocks * c2_b0_blocks * 20.55"
+block_1_objective = "c0_b1_blocks * c1_b1_blocks * 9.43"
+
+# Combined cache constraints for ILP model
+# Cache constraints for ILP model
+
+# Block 0 specific constraints
+block_0_read_only_constraint = "c2_b0_tile * c0_b0_tile * data_size"
+block_0_l1_lower_constraint = "(c0_b0_tile * c1_b0_tile * data_size + c2_b0_tile * c1_b0_tile * data_size) > L1_size"
+block_0_l2_upper_constraint = "(c0_b0_tile * c1_b0_tile * data_size + c2_b0_tile * c1_b0_tile * data_size) <= L2_size"
+block_0_read_write_constraint = "(c0_b0_tile * c1_b0_tile * data_size + c2_b0_tile * c1_b0_tile * data_size)"
+
+# # Block 1 specific constraints B->L2
+# block_1_read_only_constraint = None
+# block_1_l1_lower_constraint = "c0_b1_tile * c1_b1_tile * data_size > L1_size"
+# block_1_l2_upper_constraint = "c0_b1_tile * c1_b1_tile * data_size <= L2_size"
+# block_1_read_write_constraint = "c0_b1_tile * c1_b1_tile * data_size"
+
+# # Block 1 specific constraints B->L1
+block_1_read_only_constraint = "c0_b1_tile * c1_b1_tile * data_size"
+block_1_l1_lower_constraint = None
+block_1_l2_upper_constraint = None
+block_1_read_write_constraint = None
+
+# # Global constraints (aggregated across all blocks)
+# read_only_constraint = "c2_b0_tile * c0_b0_tile * data_size"
+# read_write_l1_constraint = "(c0_b0_tile * c1_b0_tile * data_size + c2_b0_tile * c1_b0_tile * data_size) + c0_b1_tile * c1_b1_tile * data_size > L1_size"
+# read_write_l2_constraint = "(c0_b0_tile * c1_b0_tile * data_size + c2_b0_tile * c1_b0_tile * data_size) + c0_b1_tile * c1_b1_tile * data_size <= L2_size"
+# read_write_constraint = "(c0_b0_tile * c1_b0_tile * data_size + c2_b0_tile * c1_b0_tile * data_size) + c0_b1_tile * c1_b1_tile * data_size"
+
+# Auto-generated objective function
+objective_function = "(c0_b0_blocks * c1_b0_blocks * c2_b0_blocks * 20.55) + (c0_b1_blocks * c1_b1_blocks * 9.43)"
