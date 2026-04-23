@@ -1,14 +1,16 @@
 # TileMind
 
-TileMind is a tile size optimization tool based on **PPCG**, designed to automatically determine optimal tile sizes for polyhedral benchmarks (PolyBench). It provides both sequential and OpenMP parallel benchmarking workflows.
+TileMind is a tile size optimization tool designed to automatically determine optimal tile sizes. The method itself is **compiler-agnostic** and is not bound to any specific compiler infrastructure.
+
+> **Note on this repository:** The test code currently included in this repository is built on top of **PolyBench/C**, and uses **PPCG** as the underlying compiler for benchmarking purposes. PPCG is a dependency of the test code only, not of the TileMind method itself.
 
 ---
 
 ## Prerequisites
 
-Before using TileMind, make sure **PPCG** is installed and properly configured on your system, as all benchmarking and tile size solving relies on it.
+To run the test code in this repository (based on PolyBench/C), **PPCG** must be installed and properly configured on your system.
 
-> All testing and tile size solving are based on PPCG. Please ensure it is available in your environment before proceeding.
+> PPCG is required only for the PolyBench-based test code included here. The TileMind method itself is compiler-agnostic and can be adapted to other compiler backends.
 
 ---
 
