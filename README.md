@@ -16,17 +16,32 @@ To run the test code in this repository (based on PolyBench/C), **PPCG** must be
 
 ## Hardware Parameters Notice
 
-> ⚠️ **The hardware parameters in the auto-generated config files are profiled specifically for NVIDIA GeForce RTX 4090.** If you are running on a different platform, you must update the following fields in the config file (`<benchmark>_ilp_params_*.py`) to match your hardware:
+> ⚠️ **The hardware parameters in the auto-generated config files are profiled specifically for Intel Xeon Platinum 8538C.** If you are running on a different platform, you must update the following fields in the config file (`<benchmark>_ilp_params_*.py`) to match your hardware.
 
-**Cache & thread parameters:**
+The test platform configuration is as follows:
+
+| Parameter | Value |
+|---|---|
+| CPU | Intel Xeon Platinum 8538C |
+| Architecture | x86\_64 |
+| Physical Cores | 56 |
+| Logical Processors | 112 (Hyper-Threading, 2 threads/core) |
+| Base Frequency | ~2.7 GHz |
+| L1 Data Cache | 2.6 MiB (46 KiB per core × 56) |
+| L2 Cache | 112 MiB (2 MiB per core × 56) |
+| L3 Cache | 280 MiB (shared) |
+| NUMA Nodes | 2 (Node0: CPU 0–27, 56–83 / Node1: CPU 28–55, 84–111) |
+
+**Cache & thread parameters (per-core values used in config):**
 ```python
 # Cache parameters
-L1_size = 49152      # L1 data cache size in bytes
-L2_size = 2097152    # L2 cache size in bytes
+L1_size = 49152      # L1 data cache size in bytes (~48 KiB per core)
+L2_size = 2097152    # L2 cache size in bytes (2 MiB per core)
 cache_line = 64      # Cache line size in bytes
 
 # Parallelization information
-num_threads = 8      # Number of physical cores
+num_threads = 8      # Number of threads used in current tests
+                     # (Physical cores: 56, logical processors: 112, but only 8 used here)
 ```
 
 **Cache & operation latencies:**
@@ -145,4 +160,4 @@ python3 benchmark_ilp_auto_openmp.py <benchmark>_ilp_params_openmp.py
 - All benchmarks are based on **PolyBench/C 4.2.1**.
 - PPCG must be configured before running any script.
 - The `_ilp_params_*.py` config files are generated locally and do not need to be committed to the repository.
-- Hardware parameters in config files are profiled on **NVIDIA GeForce RTX 4090**. Update them if testing on a different platform.
+- Hardware parameters in config files are profiled on **Intel Xeon Platinum 8538C**. Update them if testing on a different platform.
