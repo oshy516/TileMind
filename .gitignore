@@ -38,4 +38,4 @@ selective_benchmark
 # 其他生成文件
 *_schedule.txt
 *_ilp_params_*.py
-dimension_detect*.py
+
