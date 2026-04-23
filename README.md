@@ -14,6 +14,55 @@ To run the test code in this repository (based on PolyBench/C), **PPCG** must be
 
 ---
 
+## Hardware Parameters Notice
+
+> ⚠️ **The hardware parameters in the auto-generated config files are profiled specifically for NVIDIA GeForce RTX 4090.** If you are running on a different platform, you must update the following fields in the config file (`<benchmark>_ilp_params_*.py`) to match your hardware:
+
+**Cache & thread parameters:**
+```python
+# Cache parameters
+L1_size = 49152      # L1 data cache size in bytes
+L2_size = 2097152    # L2 cache size in bytes
+cache_line = 64      # Cache line size in bytes
+
+# Parallelization information
+num_threads = 8      # Number of physical cores
+```
+
+**Cache & operation latencies:**
+```python
+# Cache access latencies (nanoseconds)
+T_L1 = 3.13   # L1 cache access latency
+T_L2 = 7.42   # L2 cache access latency
+
+# Operation latencies (nanoseconds)
+T_add = 0.76
+T_sub = 0.82
+T_mul = 1.55
+T_div = 5.19
+T_sqrt = 20.00
+T_trig = 40.00
+T_log_exp = 35.00
+T_pow = 45.00
+```
+
+**Statement costs in the objective function** (the constant coefficients, e.g., in `gemm`):
+```python
+# Statement costs (nanoseconds)
+T_op1 = 7.42   # Statement 1 cost (block 0)
+T_op2 = 16.78  # Statement 2 cost (block 0)
+
+# Block-specific objective functions
+block_0_objective = "c0_b0_blocks * c1_b0_blocks * 7.42 + c0_b0_blocks * c1_b0_blocks * c2_b0_blocks * c2_b0_tile * 16.78"
+
+# Auto-generated objective function
+objective_function = "(c0_b0_blocks * c1_b0_blocks * 7.42 + c0_b0_blocks * c1_b0_blocks * c2_b0_blocks * c2_b0_tile * 16.78)"
+```
+
+These constants represent profiled per-statement execution costs and must be updated if you retarget to a different platform.
+
+---
+
 ## Directory Structure
 
 Each benchmark directory (e.g., `datamining/correlation/`) contains the following key files:
@@ -28,6 +77,8 @@ Each benchmark directory (e.g., `datamining/correlation/`) contains the followin
 └── <benchmark>_ilp_params_openmp.py # Config file for OpenMP (generated)
 ```
 
+> **Single config file:** If only one `<benchmark>_ilp_params.py` exists (without `_seq` / `_openmp` suffix), it indicates that the loop structure is identical between the sequential and OpenMP versions — the only difference is the number of threads. In this case, the same config file can be used to solve both cases.
+
 ---
 
 ## Workflow
@@ -36,38 +87,42 @@ TileMind supports two workflows depending on whether a configuration file alread
 
 ### ✅ Case 1: Config File Already Exists
 
-If `<benchmark>_ilp_params_openmp.py` / `<benchmark>_ilp_params_seq.py` is already present, you can directly run the solver:
+If the config file is already present, directly run the solver:
 
 ```bash
-# For OpenMP parallel version
-python benchmark_ilp_auto_openmp.py
+# Sequential version
+python3 benchmark_ilp_auto.py <benchmark>_ilp_params_seq.py
 
-# For sequential version
-python benchmark_ilp_auto.py
+# OpenMP parallel version
+python3 benchmark_ilp_auto_openmp.py <benchmark>_ilp_params_openmp.py
+
+# If only a single shared config exists
+python3 benchmark_ilp_auto.py <benchmark>_ilp_params.py
+python3 benchmark_ilp_auto_openmp.py <benchmark>_ilp_params.py
 ```
 
 ### 🔧 Case 2: No Config File (First-time Setup)
 
-If the config file does not exist locally, you must first run the preprocessing step to generate it, then proceed to solve for tile sizes.
+If no config file exists, first generate it via the preprocessing script, then run the solver.
 
 **Step 1: Generate the config file**
 
 ```bash
-# For OpenMP parallel version
-python benchmark_preprocess_openmp.py
+# Sequential version
+python3 benchmark_preprocess.py <benchmark>.c
 
-# For sequential version
-python benchmark_preprocess.py
+# OpenMP parallel version
+python3 benchmark_preprocess_openmp.py <benchmark>.c
 ```
 
 **Step 2: Run the tile size solver**
 
 ```bash
-# For OpenMP parallel version
-python benchmark_ilp_auto_openmp.py
+# Sequential version
+python3 benchmark_ilp_auto.py <benchmark>_ilp_params_seq.py
 
-# For sequential version
-python benchmark_ilp_auto.py
+# OpenMP parallel version
+python3 benchmark_ilp_auto_openmp.py <benchmark>_ilp_params_openmp.py
 ```
 
 ---
@@ -76,10 +131,12 @@ python benchmark_ilp_auto.py
 
 | Scenario | Command |
 |---|---|
-| Config exists, solve tile size (OpenMP) | `python benchmark_ilp_auto_openmp.py` |
-| Config exists, solve tile size (sequential) | `python benchmark_ilp_auto.py` |
-| No config, generate first (OpenMP) | `python benchmark_preprocess_openmp.py` |
-| No config, generate first (sequential) | `python benchmark_preprocess.py` |
+| Config exists, sequential | `python3 benchmark_ilp_auto.py <benchmark>_ilp_params_seq.py` |
+| Config exists, OpenMP | `python3 benchmark_ilp_auto_openmp.py <benchmark>_ilp_params_openmp.py` |
+| Single shared config, sequential | `python3 benchmark_ilp_auto.py <benchmark>_ilp_params.py` |
+| Single shared config, OpenMP | `python3 benchmark_ilp_auto_openmp.py <benchmark>_ilp_params.py` |
+| No config, generate (sequential) | `python3 benchmark_preprocess.py <benchmark>.c` |
+| No config, generate (OpenMP) | `python3 benchmark_preprocess_openmp.py <benchmark>.c` |
 
 ---
 
@@ -88,3 +145,4 @@ python benchmark_ilp_auto.py
 - All benchmarks are based on **PolyBench/C 4.2.1**.
 - PPCG must be configured before running any script.
 - The `_ilp_params_*.py` config files are generated locally and do not need to be committed to the repository.
+- Hardware parameters in config files are profiled on **NVIDIA GeForce RTX 4090**. Update them if testing on a different platform.
